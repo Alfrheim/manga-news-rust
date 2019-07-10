@@ -21,36 +21,21 @@ impl PartialEq for Manga {
 fn extract_manga(contents: String) -> Vec<Manga> {
     let document = Document::from(&contents[..]);
 
-    // extract_chaptersrec(&document);
-
-    //    let chapters = extract_chaptersrec(&document);
-    //
-    //    for chapter in chapters {
-    //        println!("{}", chapter);
-    //    }
-    //
-    println!("searching for elements");
     let mangas: Vec<Manga> = document
         .find(Class("chaptersrec"))
         .map(|node| get_manga_from(&node))
         .collect();
-
-    for node in document.find(Class("chaptersrec")) {
-        // println!("{:#?}", node);
-        // println!("searching in node {:?}", node);
-        // println!("printing attr: {:#?}", last);
-        get_manga_from(&node);
-    }
 
     return mangas;
 }
 
 fn get_manga_from(node: &Node) -> Manga {
     let link = node.attr("href").unwrap_or("link/not/found/0");
+    let manga: Vec<&str> = link.split("/").collect();
     let chapter = link.split("/").last().unwrap_or("0");
 
     Manga {
-        name: link.to_string(),
+        name: manga[1].to_string(),
         chapter: chapter.to_string(),
         link: link.to_string(),
     }
