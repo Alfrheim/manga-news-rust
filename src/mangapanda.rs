@@ -56,6 +56,10 @@ fn extract_chaptersrec(document: &Document) -> Vec<String> {
     Vec::new()
 }
 
+fn get_new_mangas_from(oldMangas: Vec<Manga>, newMangas: Vec<Manga>) -> Vec<Manga> {
+    return Vec::new();
+}
+
 #[test]
 fn should_extract_manga_info_from_string() {
     let contents = fs::read_to_string("src/mangapanda_source_example.html")
@@ -67,4 +71,29 @@ fn should_extract_manga_info_from_string() {
         link: String::from("/onepunch-man/160")};
 
     assert_eq!(extract_manga(contents).first().expect("can't extract any content"), &manga)
+}
+
+#[test]
+fn should_return_mangas_that_are_news() {
+        let manga1 = Manga{
+            name: String::from("onepunch-man"),
+            chapter: String::from("160"),
+            link: String::from("/onepunch-man/160")};
+
+    let manga2 = Manga{
+        name: String::from("one-piece"),
+        chapter: String::from("160"),
+        link: String::from("/one-piece/160")};
+
+    let newManga = Manga{
+        name: String::from("onepunch-man"),
+        chapter: String::from("161"),
+        link: String::from("/onepunch-man/160")};
+
+
+    let dbMangas = vec!(manga1, manga2);
+    let newMangas = vec!(newManga);
+
+    assert_eq!(get_new_mangas_from(dbMangas, newMangas), newManga)
+
 }
